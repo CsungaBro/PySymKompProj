@@ -1,0 +1,16 @@
+Prop;;;;
+#P_id;dens;E;v;A
+0;7800;200000;0.3;100;
+Nodes;;;;
+#N_id;x;y;;
+0;0;0;;
+1;1000;0;;
+Elements; ;;;
+#E_id;from;to;prop;
+0;0;1;0;
+In_Conds_U; ;;;
+#I_U_id;N_id;u_x;u_y;
+0;0;1;1;
+In_Conds_F; ;;;
+#I_F_id;N_id;Fx;Fy;
+0;1;0;1000;
