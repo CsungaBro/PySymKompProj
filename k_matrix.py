@@ -1,5 +1,9 @@
 import numpy as np
 
+# Gets
+# Does
+# Gives
+
 def globalKMxMaker(kMx,elem):
     print(len(elem[0].kElementMartix))
     for e in elem:
@@ -12,6 +16,9 @@ def globalKMxMaker(kMx,elem):
                 kMx[n1][n2] += e.kElementMartix[i][j]
                 #print(kMx[n1][n2])
 
+# Gets
+# Does
+# Gives
 
 def globalRedKMxMaker(kMx,inU):
     hArray = []

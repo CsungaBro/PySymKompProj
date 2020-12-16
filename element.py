@@ -2,6 +2,10 @@ import funcionts
 import math
 import numpy as np
 
+# Gets
+# Does
+# Gives
+
 def transMx(ang):
     c = math.cos(ang)        
     s = math.sin(ang)
@@ -19,6 +23,10 @@ def transMx(ang):
     tMxT = np.transpose(tMx)
     return tMx,tMxT 
 
+# Gets
+# Does
+# Gives
+
 def kCompCalc(L,E,A,Iz):
     g = Iz*E/L**3
     h1 = np.array([
@@ -30,6 +38,10 @@ def kCompCalc(L,E,A,Iz):
         [0,6*L*g,4*L**2*g,0,-6*L*g,4*L**2*g]
     ])
     return h1
+
+# Gets
+# Does
+# Gives
 
 class Element:
     def __init__(self,id_E,propert,node,element):
@@ -114,6 +126,9 @@ class Element:
         print(self.kElementMartix)
         print(self.nodeNum)
 
+# Gets
+# Does
+# Gives
 
 def elementsMaker(array,eContainer):
     for e in array[2]:

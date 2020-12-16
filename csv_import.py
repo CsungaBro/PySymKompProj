@@ -1,6 +1,7 @@
 import csv
 
-
+# Gets some data, the name of the searched data, and where it should put it 
+# Gives back the rownumber, wehere it ends
 def dataRowCounter(data,name,dataTo):
     for i in range(len(data)):
         for j in range(len(name)):
@@ -8,10 +9,15 @@ def dataRowCounter(data,name,dataTo):
                 dataTo[j] = i + 2
     dataTo[5] = len(data) + 2
 
+# Gets the row numbers of the datas, and the ??????
+# Gives back the range array
 def rangeMaker(ranges,rows): 
     for i in range(len(ranges)):
         ranges[i].append(rows[i])
         ranges[i].append(rows[i+1]-2)
+
+# Gets
+# Gives
 
 def dataToArray(variab,rang,data):
     for i in range(len(variab)):
@@ -19,6 +25,9 @@ def dataToArray(variab,rang,data):
         h2 = rang[i][1]
         for j in range(h1,h2):
             variab[i].append(data[j])
+
+# Gets
+# Gives
 
 def arrayCleaner(array):
     for data in array:
@@ -31,9 +40,15 @@ def arrayCleaner(array):
             for j in h1:
                 del row[j]
 
+# Gets
+# Gives
+
 def dataPrinter(data):
     for i in data:
         print(i)
+
+# Gets
+# Gives
 
 def csv_toVar(csv_File,varArray):
     with open(csv_File, "r") as csv_file:

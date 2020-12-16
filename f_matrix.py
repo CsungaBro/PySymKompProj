@@ -1,5 +1,9 @@
 import numpy as np
 
+# Gets
+# Does
+# Gives
+
 def initFToArrayMaker(mxSize,inF):
     h1 = np.zeros((mxSize,1))
 
@@ -7,6 +11,10 @@ def initFToArrayMaker(mxSize,inF):
         for j in range(0,2):
             h1[int(i[1])*2+j][0] = int(i[2+j])
     return np.copy(h1)
+
+# Gets
+# Does
+# Gives
 
 def fTofRed(inU,array):
     hArray = []
