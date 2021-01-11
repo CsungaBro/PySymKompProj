@@ -7,6 +7,7 @@ import csv_import
 import element
 import f_matrix
 import funcionts
+import graphic_test
 import k_matrix
 
 prop = []
@@ -22,6 +23,7 @@ variablesArray =[
     condU,#I_U_id;N_id;u_x;u_y;
     condF#I_F_id;N_id;Fx;Fy;
 ]
+
 def main():
     csv_import.csv_toVar('Test4.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
 
@@ -60,6 +62,7 @@ def main():
     funcionts.printHelper("F Red matrix",fMxRed)                                # Test
     funcionts.printHelper("K Red Matrix",globalRedKMx)                          # Test
 
+    
 
     try1 = np.linalg.inv(globalRedKMx)                                          # Inverz
     funcionts.fivePrec(try1)                                                    # it makes the valus display for the 5th value 
