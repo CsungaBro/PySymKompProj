@@ -31,11 +31,11 @@ def kCompCalc(L,E,A,Iz):
     g = Iz*E/L**3
     h1 = np.array([
         [A*E/L,0,0,-A*E/L,0,0],
-        [0,12*g,6*L*g,0,-12*g,-6*L*g],
-        [0,6*L*g,4*L**2*g,0,-6*L*g,-4*L**2*g],
-        [A*E/L,0,0,A*E/L,0,0],
+        [0,12*g,6*L*g,0,-12*g,6*L*g],
+        [0,6*L*g,4*L**2*g,0,-6*L*g,2*L**2*g],
+        [-A*E/L,0,0,A*E/L,0,0],
         [0,-12*g,-6*L*g,0,12*g,-6*L*g],
-        [0,6*L*g,4*L**2*g,0,-6*L*g,4*L**2*g]
+        [0,6*L*g,2*L**2*g,0,-6*L*g,4*L**2*g]
     ])
     return h1
 
@@ -70,19 +70,20 @@ class Element:
                 self.dens = float(row[1])
                 self.E = float(row[2])
                 self.v = float(row[3])
-                self.A = float(row[4]) #TODO implementation of A into csv
-                self.Iz = 1000 #EZ
-                #self.A = float(row[4])
+                self.A = float(row[4]) 
+                self.Iz = float(row[5])
 
         for row in node: # EZ
             if int(elementRow[1]) == int(row[0]):
                 self.x[0] =float(row[1])
                 self.y[0] =float(row[2])
+                # self.phi[0] = float(row[3])
 
         for row in node:# EZ
             if int(elementRow[2]) == int(row[0]):
                 self.x[1] =float(row[1])
-                self.y[1] =float(row[2])        
+                self.y[1] =float(row[2])
+                # self.phi[1] = float(row[3])
 
         self.L = math.sqrt((self.x[0]-self.x[1])**2+(self.y[0]-self.y[1])**2)
 
@@ -97,7 +98,10 @@ class Element:
             elif self.y[1]-self.y[0] < 0:
                 self.alfa = 270*math.pi/180
         else:
-            self.alfa = math.atan(self.y[1]-self.y[0])/(self.x[1]-self.x[0]) 
+            dyt = self.y[1]-self.y[0]
+            dxt = self.x[1]-self.x[0]
+            dtt = dyt/dxt
+            self.alfa = math.atan(dtt) #TEST to greater than 180
 
 
         #c = math.cos(self.alfa)
@@ -113,7 +117,8 @@ class Element:
         tMx,tMxT = transMx(self.alfa)
         #print(tMx)
         #print(tMxT)  
-        self.kElementMartix = tMxT * kCompCalc(self.L,self.E,self.A,self.Iz) * tMx
+        self.kElementMartix = tMxT @ kCompCalc(self.L,self.E,self.A,self.Iz) @ tMx
+        print("jeabtai")
     def printEr(self):
         print(self.x)
         print(self.y)

@@ -25,7 +25,7 @@ variablesArray =[
 ]
 
 def main():
-    csv_import.csv_toVar('Test4.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
+    csv_import.csv_toVar('Test5.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
 
 
     e0 =  element.Element(0,prop,nodes,elements)                                # Test
@@ -36,7 +36,7 @@ def main():
     element.elementsMaker(variablesArray,elementsContainer)                     # makes the elements from the data's
 
 
-    mxSize = len(variablesArray[1])*3 #TODO                                     # It gives the size of the K matrix
+    mxSize = len(variablesArray[1])*3 #TODO  implement as DOF                   # It gives the size of the K matrix
     globalKMx = np.zeros((mxSize,mxSize))                                       # makes a nxn zero matrix
     funcionts.printHelper("global K Matrix",globalKMx)                          # Test
     k_matrix.globalKMxMaker(globalKMx,elementsContainer)                        # it makes the global K matrix form the elements
@@ -47,8 +47,8 @@ def main():
 
     globalRedKMx = np.copy(globalKMx)                                           # makes a copy of the global K Matrix
     funcionts.printHelper("global K Red Matrix",globalRedKMx)                   # test
-    gr = np.delete(globalRedKMx,[0,1],0)#<-- array, what i, row/coloum          ## Test 
-    gr2 = np.delete(gr,[0,1],1)  #<-- array, what i, row/coloum                 ## Test 
+    # gr = np.delete(globalRedKMx,[0,1],0)#<-- array, what i, row/coloum        ## Test 
+    # gr2 = np.delete(gr,[0,1],1)  #<-- array, what i, row/coloum               ## Test 
 
     globalRedKMx = k_matrix.globalRedKMxMaker(globalRedKMx,variablesArray[3])   # makes the reducted K matrix from the global and the Initial U cond
     funcionts.printHelper("globalRedKMx", globalRedKMx,)                        # Test
@@ -74,6 +74,9 @@ def main():
     #print(try2)
     #print(try3)
     #print(try4)
+    funcionts.printHelper("try2",try2)                                          # Test
+    funcionts.printHelper("try3",try3)                                          # Test
+    funcionts.printHelper("try4",try4)                                          # Test
     funcionts.printHelper("try5",try5)                                          # Test
 
 main()
