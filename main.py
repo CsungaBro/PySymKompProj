@@ -25,7 +25,7 @@ variablesArray =[
 ]
 
 def main():
-    csv_import.csv_toVar('Test5.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
+    csv_import.csv_toVar('Test6.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
 
 
     e0 =  element.Element(0,prop,nodes,elements)                                # Test

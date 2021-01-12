@@ -9,7 +9,7 @@ def initFToArrayMaker(mxSize,inF):
 
     for i in inF:
         for j in range(0,3):
-            h1[int(i[1])*3+j][0] = int(i[2+j])
+            h1[int(i[1])*3+j][0] += int(i[2+j])
     return np.copy(h1)
 
 # Gets
