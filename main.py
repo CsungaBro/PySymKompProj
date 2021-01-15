@@ -57,13 +57,13 @@ def main():
     #Constraints in x direction
     for x in range(len(nodes)):
         if int(condU[x][2])==1:
-            Constx=patches.Rectangle((int(nodes[x][1])-2,int(nodes[x][2])-2),4,1,color='black')
+            Constx=patches.Rectangle((int(nodes[x][1])-2,int(nodes[x][2])-3),4,1,color='black')
             ax.add_patch(Constx)
             
     #Constraints in y direction
     for x in range(len(nodes)):
         if int(condU[x][3])==1:
-            Constx=patches.Rectangle((int(nodes[x][1])-2,int(nodes[x][2])-2),1,4,color='black')
+            Constx=patches.Rectangle((int(nodes[x][1])-3,int(nodes[x][2])-2),1,4,color='black')
             ax.add_patch(Constx)
 
     #Rotational constraint
@@ -72,6 +72,23 @@ def main():
             Constx=patches.Rectangle((int(nodes[x][1])+2,int(nodes[x][2])-2),1,4,color='black')
             ax.add_patch(Constx)
 
+    #Forces in "x" direction
+    for j in range(len(condF)):
+        x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])+int(condF[j][2])]
+        y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])]
+        if int(condF[j][2])<0:
+            ax.plot(x_values, y_values,'r<-')
+        if int(condF[j][2])>=0:
+             ax.plot(x_values, y_values,'r>-')
+
+    #Forces in "y" direction
+    for j in range(len(condF)):
+        x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])]
+        y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])+int(condF[j][3])]
+        if int(condF[j][3])<0:
+            ax.plot(x_values, y_values,'rv-')
+        if int(condF[j][3])>=0:
+             ax.plot(x_values, y_values,'r^-')
             
     plt.show()
 
