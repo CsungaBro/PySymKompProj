@@ -89,7 +89,12 @@ def main():
             ax.plot(x_values, y_values,'rv-')
         if int(condF[j][3])>=0:
              ax.plot(x_values, y_values,'r^-')
-            
+
+    #Nodes
+    for k in range(len(nodes)):
+        Crc=patches.Circle((int(nodes[k][1]), int(nodes[k][2])), 1, color='red')
+        ax.add_patch(Crc)   
+
     plt.show()
 
 
