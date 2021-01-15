@@ -34,6 +34,23 @@ def main():
 
     elementsContainer = []                                                      # contains all the ellement
     element.elementsMaker(variablesArray,elementsContainer)                     # makes the elements from the data's
+    funcionts.printHelper("nodes",nodes)
+    funcionts.printHelper("elements",elements)
+    funcionts.printHelper("len(elements)",len(elements))
+
+    #Visualization of the input
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    
+    elmo=int((len(elements)))
+    for i in range(elmo):
+        el1=int(elements[i][1])
+        el2=int(elements[i][2])
+        x_values=[nodes[el1][1], nodes[el2][1]]
+        y_values=[nodes[el1][2], nodes[el2][2]]
+        ax.plot(x_values, y_values,'k')
+
+    plt.show()
 
 
     mxSize = len(variablesArray[1])*3 #TODO  implement as DOF                   # It gives the size of the K matrix
