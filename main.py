@@ -50,17 +50,17 @@ def main():
     for i in range(elmo):
         el1=int(elements[i][1])
         el2=int(elements[i][2])
-        x_values=[nodes[el1][1], nodes[el2][1]]
-        y_values=[nodes[el1][2], nodes[el2][2]]
+        x_values=[int(nodes[el1][1]), int(nodes[el2][1])]
+        y_values=[int(nodes[el1][2]), int(nodes[el2][2])]
         ax.plot(x_values, y_values,'k')
 
     #Constraints in x direction
     for x in range(len(nodes)):
-        if condU[x][2]==1:
-            Constx=patches.Rectangle((nodes[x][1], nodes[x][2]), 1, 1,color='black')
+        if int(condU[x][2])==1:
+            Constx=patches.Rectangle((int(nodes[x][1])-2,int(nodes[x][2])-2),4,1,color='black')
             ax.add_patch(Constx)
             
-    ax.autoscale_view()
+
     plt.show()
 
 
