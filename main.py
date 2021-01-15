@@ -60,7 +60,19 @@ def main():
             Constx=patches.Rectangle((int(nodes[x][1])-2,int(nodes[x][2])-2),4,1,color='black')
             ax.add_patch(Constx)
             
+    #Constraints in y direction
+    for x in range(len(nodes)):
+        if int(condU[x][3])==1:
+            Constx=patches.Rectangle((int(nodes[x][1])-2,int(nodes[x][2])-2),1,4,color='black')
+            ax.add_patch(Constx)
 
+    #Rotational constraint
+    for x in range(len(nodes)):
+        if int(condU[x][4])==1:
+            Constx=patches.Rectangle((int(nodes[x][1])+2,int(nodes[x][2])-2),1,4,color='black')
+            ax.add_patch(Constx)
+
+            
     plt.show()
 
 
