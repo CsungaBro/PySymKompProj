@@ -37,8 +37,11 @@ def main():
     funcionts.printHelper("nodes",nodes)
     funcionts.printHelper("elements",elements)
     funcionts.printHelper("len(elements)",len(elements))
-
+    funcionts.printHelper("CondU",condU)
+    funcionts.printHelper("len(nodes)",len(nodes))
     #Visualization of the input
+
+    #Elements
     fig = plt.figure()
     ax = fig.add_subplot(111)
     
@@ -49,6 +52,11 @@ def main():
         x_values=[nodes[el1][1], nodes[el2][1]]
         y_values=[nodes[el1][2], nodes[el2][2]]
         ax.plot(x_values, y_values,'k')
+
+    #Constraints in x direction
+    for x in range(len(nodes)):
+        if condU[x][2]==1:
+             ax.add_patch(patches.Rectangle((nodes[x][1], nodes[x][2]), 0.5, 2.0,color='black'))
 
     plt.show()
 
