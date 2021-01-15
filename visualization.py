@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-%matplotlib inline
+
 
 #Nodes
 nd = np.array([[20.0, 20.0], [80.0, 20.0], [50.0, 60.0]]) 
@@ -54,3 +54,4 @@ for j in range(len(fx)):
         ax.plot(x_values, y_values,'rv-')
     if fy[j]>=0:
         ax.plot(x_values, y_values,'r^-')
+plt.show()

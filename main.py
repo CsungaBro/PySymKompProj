@@ -57,8 +57,10 @@ def main():
     #Constraints in x direction
     for x in range(len(nodes)):
         if condU[x][2]==1:
-             ax.add_patch(patches.Rectangle((nodes[x][1], nodes[x][2]), 0.5, 2.0,color='black'))
-
+            Constx=patches.Rectangle((nodes[x][1], nodes[x][2]), 1, 1,color='black')
+            ax.add_patch(Constx)
+            
+    ax.autoscale_view()
     plt.show()
 
 
