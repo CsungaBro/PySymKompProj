@@ -175,16 +175,18 @@ def main():
 
     funcionts.printHelper("ZeroMatrix",ZeroMatrix)
 
-    #MA = np.zeros([3, 3],int)
-    
     MovementMatrix = np.array(ZeroMatrix)
-    HP=MovementMatrix.reshape(3,3)
+    HP=MovementMatrix.reshape(int(len(nodes)),3)
 
     funcionts.printHelper("HP",HP)        
 
+    NodesMod=np.array(nodes)
+    funcionts.printHelper("NodesMod",NodesMod)
 
-
-
-
+    A=np.delete(NodesMod, 0, axis=1)
+    B=np.delete(HP, 2, axis=1)
+    
+    funcionts.printHelper("A",A)
+    funcionts.printHelper("B",B)
 plt.show()
 main()
