@@ -188,5 +188,12 @@ def main():
     
     funcionts.printHelper("A",A)
     funcionts.printHelper("B",B)
-plt.show()
+
+    C=A.astype(float)
+    
+    FixMatrix=np.add(B,C)
+
+    funcionts.printHelper("FixMatrix",FixMatrix)
+
+    plt.show()
 main()
