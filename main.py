@@ -128,17 +128,52 @@ def main():
 
     try1 = np.linalg.inv(globalRedKMx)                                          # Inverz
     funcionts.fivePrec(try1)                                                    # it makes the valus display for the 5th value 
-    try2 = np.multiply(fMxRed,try1)                                             # try mult
-    try3 = try1*fMxRed                                                          # try multi
-    try4 = np.matmul(try1,fMxRed)                                               # try multi
+    #try2 = np.multiply(fMxRed,try1)                                             # try mult
+    #try3 = try1*fMxRed                                                          # try multi
+    #try4 = np.matmul(try1,fMxRed)                                               # try multi
     try5 = try1@fMxRed                                                          # try multi
     funcionts.printHelper("try1",try1)                                          # Test
     #print(try2)
     #print(try3)
     #print(try4)
-    funcionts.printHelper("try2",try2)                                          # Test
-    funcionts.printHelper("try3",try3)                                          # Test
-    funcionts.printHelper("try4",try4)                                          # Test
-    funcionts.printHelper("try5",try5)                                          # Test
+    #funcionts.printHelper("try2",try2)                                          # Test
+    #funcionts.printHelper("try3",try3)                                          # Test
+    #funcionts.printHelper("try4",try4)                                          # Test
+    funcionts.printHelper("try5",try5) 
+    
+    nArray = []
+    for init in condU:
+        
+        if int(init[2]) == 1:
+            nArray.append(int(init[1])*3)
+        if int(init[3]) == 1:
+            nArray.append(int(init[1])*3+1)
+        if int(init[4]) == 1:
+            nArray.append(int(init[1])*3+2)  
+                                                   
+    funcionts.printHelper("nArray",nArray)
+    funcionts.printHelper("len(nodes)",len(nodes))
+
+    FullMatrix=[]
+    kszam=(int(len(nodes)))*3
+    for z in range(kszam):
+        FullMatrix.append(z)
+
+    funcionts.printHelper("kszam",kszam)      
+    funcionts.printHelper("FullMatrix",FullMatrix)
+
+    MatDiff=(list(list(set(FullMatrix)-set(nArray)) + list(set(nArray)-set(FullMatrix))))
+    funcionts.printHelper("MatDiff",MatDiff)
+
+    ZeroMatrix=[]
+    zszam=(int(len(nodes)))*3
+    for z in range(zszam):
+        ZeroMatrix.append(0)
+
+    for l in range(len(MatDiff)):
+        ZeroMatrix[MatDiff[l]]=try5[l][0]
+
+    funcionts.printHelper("ZeroMatrix",ZeroMatrix)
+
 
 main()
