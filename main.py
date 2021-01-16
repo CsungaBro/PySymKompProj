@@ -95,7 +95,7 @@ def main():
         Crc=patches.Circle((int(nodes[k][1]), int(nodes[k][2])), 1, color='red')
         ax.add_patch(Crc)   
 
-    plt.show()
+    
 
 
     mxSize = len(variablesArray[1])*3 #TODO  implement as DOF                   # It gives the size of the K matrix
@@ -175,5 +175,16 @@ def main():
 
     funcionts.printHelper("ZeroMatrix",ZeroMatrix)
 
+    #MA = np.zeros([3, 3],int)
+    
+    MovementMatrix = np.array(ZeroMatrix)
+    HP=MovementMatrix.reshape(3,3)
 
+    funcionts.printHelper("HP",HP)        
+
+
+
+
+
+plt.show()
 main()
