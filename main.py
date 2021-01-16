@@ -73,22 +73,22 @@ def main():
             ax.add_patch(Constx)
 
     #Forces in "x" direction
-    for j in range(len(condF)):
-        x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])+int(condF[j][2])]
-        y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])]
-        if int(condF[j][2])<0:
-            ax.plot(x_values, y_values,'r<-')
-        if int(condF[j][2])>=0:
-             ax.plot(x_values, y_values,'r>-')
+    #for j in range(len(condF)):
+    #   x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])+int(condF[j][2])]
+    #    y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])]
+    #    if int(condF[j][2])<0:
+    #        ax.plot(x_values, y_values,'r<-')
+    #    if int(condF[j][2])>=0:
+    #         ax.plot(x_values, y_values,'r>-')
 
     #Forces in "y" direction
-    for j in range(len(condF)):
-        x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])]
-        y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])+int(condF[j][3])]
-        if int(condF[j][3])<0:
-            ax.plot(x_values, y_values,'rv-')
-        if int(condF[j][3])>=0:
-             ax.plot(x_values, y_values,'r^-')
+    #for j in range(len(condF)):
+    #    x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])]
+    #    y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])+int(condF[j][3])]
+    #    if int(condF[j][3])<0:
+    #        ax.plot(x_values, y_values,'rv-')
+    #    if int(condF[j][3])>=0:
+    #        ax.plot(x_values, y_values,'r^-')
 
     #Nodes
     for k in range(len(nodes)):
@@ -194,6 +194,14 @@ def main():
     FixMatrix=np.add(B,C)
 
     funcionts.printHelper("FixMatrix",FixMatrix)
+
+    elma=int((len(elements)))
+    for i in range(elma):
+        el11=int(elements[i][1])
+        el22=int(elements[i][2])
+        x_values2=[int(FixMatrix[el11][0]), int(FixMatrix[el22][0])]
+        y_values2=[int(FixMatrix[el11][1]), int(FixMatrix[el22][1])]
+        ax.plot(x_values2, y_values2,'k')
 
     plt.show()
 main()
