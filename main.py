@@ -2,6 +2,7 @@ import csv
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 
 import csv_import
 import element
@@ -34,6 +35,71 @@ def main():
 
     elementsContainer = []                                                      # contains all the ellement
     element.elementsMaker(variablesArray,elementsContainer)                     # makes the elements from the data's
+    funcionts.printHelper("nodes",nodes)
+    funcionts.printHelper("elements",elements)
+    funcionts.printHelper("len(elements)",len(elements))
+    funcionts.printHelper("CondU",condU)
+    funcionts.printHelper("len(nodes)",len(nodes))
+    #Visualization of the input
+
+    #Elements
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    
+    elmo=int((len(elements)))
+    for i in range(elmo):
+        el1=int(elements[i][1])
+        el2=int(elements[i][2])
+        x_values=[int(nodes[el1][1]), int(nodes[el2][1])]
+        y_values=[int(nodes[el1][2]), int(nodes[el2][2])]
+        ax.plot(x_values, y_values,'k')
+
+    #Constraints in x direction
+    for x in range(len(nodes)):
+        if int(condU[x][2])==1:
+            Constx=patches.Rectangle((int(nodes[x][1])-2,int(nodes[x][2])-3),4,1,color='black')
+            ax.add_patch(Constx)
+            
+    #Constraints in y direction
+    for x in range(len(nodes)):
+        if int(condU[x][3])==1:
+            Constx=patches.Rectangle((int(nodes[x][1])-3,int(nodes[x][2])-2),1,4,color='black')
+            ax.add_patch(Constx)
+
+    #Rotational constraint
+    for x in range(len(nodes)):
+        if int(condU[x][4])==1:
+            Constx=patches.Rectangle((int(nodes[x][1])+2,int(nodes[x][2])-2),1,4,color='black')
+            ax.add_patch(Constx)
+
+    #Forces in "x" direction
+    for j in range(len(condF)):
+        if int(condF[j][2])<0:
+            x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])-10]#+int(condF[j][2])]
+            y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])]
+            ax.plot(x_values, y_values,'r<-')
+        if int(condF[j][2])>0:
+            x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])+10]#+int(condF[j][2])]
+            y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])]
+            ax.plot(x_values, y_values,'r>-')
+
+    #Forces in "y" direction
+    for j in range(len(condF)):
+        if int(condF[j][3])<0:
+            x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])]
+            y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])-10]#+int(condF[j][3])]
+            ax.plot(x_values, y_values,'rv-')
+        if int(condF[j][3])>0:
+            x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])]
+            y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])+10]#+int(condF[j][3])]
+            ax.plot(x_values, y_values,'r^-')
+
+    #Nodes
+    for k in range(len(nodes)):
+        Crc=patches.Circle((int(nodes[k][1]), int(nodes[k][2])), 1, color='red')
+        ax.add_patch(Crc)   
+
+    
 
 
     mxSize = len(variablesArray[1])*3 #TODO  implement as DOF                   # It gives the size of the K matrix
@@ -66,17 +132,80 @@ def main():
 
     try1 = np.linalg.inv(globalRedKMx)                                          # Inverz
     funcionts.fivePrec(try1)                                                    # it makes the valus display for the 5th value 
-    try2 = np.multiply(fMxRed,try1)                                             # try mult
-    try3 = try1*fMxRed                                                          # try multi
-    try4 = np.matmul(try1,fMxRed)                                               # try multi
+    #try2 = np.multiply(fMxRed,try1)                                             # try mult
+    #try3 = try1*fMxRed                                                          # try multi
+    #try4 = np.matmul(try1,fMxRed)                                               # try multi
     try5 = try1@fMxRed                                                          # try multi
     funcionts.printHelper("try1",try1)                                          # Test
     #print(try2)
     #print(try3)
     #print(try4)
-    funcionts.printHelper("try2",try2)                                          # Test
-    funcionts.printHelper("try3",try3)                                          # Test
-    funcionts.printHelper("try4",try4)                                          # Test
-    funcionts.printHelper("try5",try5)                                          # Test
+    #funcionts.printHelper("try2",try2)                                          # Test
+    #funcionts.printHelper("try3",try3)                                          # Test
+    #funcionts.printHelper("try4",try4)                                          # Test
+    funcionts.printHelper("try5",try5) 
+    
+    nArray = []
+    for init in condU:
+        
+        if int(init[2]) == 1:
+            nArray.append(int(init[1])*3)
+        if int(init[3]) == 1:
+            nArray.append(int(init[1])*3+1)
+        if int(init[4]) == 1:
+            nArray.append(int(init[1])*3+2)  
+                                                   
+    funcionts.printHelper("nArray",nArray)
+    funcionts.printHelper("len(nodes)",len(nodes))
 
+    FullMatrix=[]
+    kszam=(int(len(nodes)))*3
+    for z in range(kszam):
+        FullMatrix.append(z)
+
+    funcionts.printHelper("kszam",kszam)      
+    funcionts.printHelper("FullMatrix",FullMatrix)
+
+    MatDiff=(list(list(set(FullMatrix)-set(nArray)) + list(set(nArray)-set(FullMatrix))))
+    funcionts.printHelper("MatDiff",MatDiff)
+
+    ZeroMatrix=[]
+    zszam=(int(len(nodes)))*3
+    for z in range(zszam):
+        ZeroMatrix.append(0)
+
+    for l in range(len(MatDiff)):
+        ZeroMatrix[MatDiff[l]]=try5[l][0]
+
+    funcionts.printHelper("ZeroMatrix",ZeroMatrix)
+
+    MovementMatrix = np.array(ZeroMatrix)
+    HP=MovementMatrix.reshape(int(len(nodes)),3)
+
+    funcionts.printHelper("HP",HP)        
+
+    NodesMod=np.array(nodes)
+    funcionts.printHelper("NodesMod",NodesMod)
+
+    A=np.delete(NodesMod, 0, axis=1)
+    B=np.delete(HP, 2, axis=1)
+    
+    funcionts.printHelper("A",A)
+    funcionts.printHelper("B",B)
+
+    C=A.astype(float)
+    
+    FixMatrix=np.add(B,C)
+
+    funcionts.printHelper("FixMatrix",FixMatrix)
+
+    elma=int((len(elements)))
+    for i in range(elma):
+        el11=int(elements[i][1])
+        el22=int(elements[i][2])
+        x_values2=[int(FixMatrix[el11][0]), int(FixMatrix[el22][0])]
+        y_values2=[int(FixMatrix[el11][1]), int(FixMatrix[el22][1])]
+        ax.plot(x_values2, y_values2,'b')
+
+    plt.show()
 main()
