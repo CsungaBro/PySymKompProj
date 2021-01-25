@@ -26,7 +26,7 @@ variablesArray =[
 ]
 
 def main():
-    csv_import.csv_toVar('Test6.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
+    csv_import.csv_toVar('Test7.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
 
 
     e0 =  element.Element(0,prop,nodes,elements)                                # Test
@@ -192,10 +192,11 @@ def main():
     
     funcionts.printHelper("A",A)
     funcionts.printHelper("B",B)
+    funcionts.printHelper("100B",100*B)
 
     C=A.astype(float)
     
-    FixMatrix=np.add(B,C)
+    FixMatrix=np.add(100*B,C)
 
     funcionts.printHelper("FixMatrix",FixMatrix)
 
