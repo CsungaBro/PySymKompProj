@@ -27,7 +27,7 @@ variablesArray =[
 ]
 
 def main():
-    csv_import.csv_toVar('Test6.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
+    csv_import.csv_toVar('Truss_Test_3.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
 
 
     e0 =  element.Element(0,prop,nodes,elements)                                # Test
@@ -185,7 +185,7 @@ def main():
 
     C=A.astype(float)
     
-    FixMatrix=np.add(B,C)
+    FixMatrix=np.add(100000000*B,C)
 
     funcionts.printHelper("FixMatrix",FixMatrix)
 
@@ -193,9 +193,12 @@ def main():
     for i in range(elma):
         el11=int(elements[i][1])
         el22=int(elements[i][2])
-        x_values2=[int(FixMatrix[el11][0]), int(FixMatrix[el22][0])]
-        y_values2=[int(FixMatrix[el11][1]), int(FixMatrix[el22][1])]
+        x_values2=[float(FixMatrix[el11][0]), float(FixMatrix[el22][0])]
+        y_values2=[float(FixMatrix[el11][1]), float(FixMatrix[el22][1])]
         ax.plot(x_values2, y_values2,'b')
+
+        funcionts.printHelper("x_values2",x_values2)
+        funcionts.printHelper("y_values2",y_values2)
 
     bl1 = mlines.Line2D([], [], color='black', marker='o',markersize=10, label='Original structure')
     bl2 = mlines.Line2D([], [], color='blue', marker='o',markersize=10, label='Deformed structure')
