@@ -27,7 +27,7 @@ variablesArray =[
 ]
 
 def main():
-    csv_import.csv_toVar('Truss_Test_3.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
+    csv_import.csv_toVar('2_ModVer_Dokumentation.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
 
 
     e0 =  element.Element(0,prop,nodes,elements)                                # Test
@@ -185,7 +185,7 @@ def main():
 
     C=A.astype(float)
     
-    FixMatrix=np.add(100000000*B,C)
+    FixMatrix=np.add(100000*B,C)
 
     funcionts.printHelper("FixMatrix",FixMatrix)
 
