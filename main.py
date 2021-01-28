@@ -25,8 +25,8 @@ variablesArray =[
     condF#I_F_id;N_id;Fx;Fy;
 ]
 
-def main():
-    csv_import.csv_toVar('Test6.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
+def main(csv_fill):
+    csv_import.csv_toVar(csv_fill,variablesArray)                            # it takes the csv file and import its into an array as ints
 
 
     e0 =  element.Element(0,prop,nodes,elements)                                # Test
@@ -208,4 +208,5 @@ def main():
         ax.plot(x_values2, y_values2,'b')
 
     plt.show()
-main()
+    
+main('Test6_3.csv')
