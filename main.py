@@ -27,7 +27,7 @@ variablesArray =[
 ]
 
 def main():
-    csv_import.csv_toVar('2_ModVer_Dokumentation.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
+    csv_import.csv_toVar('8_Square_Dokumentation.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
 
 
     e0 =  element.Element(0,prop,nodes,elements)                                # Test
@@ -185,7 +185,7 @@ def main():
 
     C=A.astype(float)
     
-    FixMatrix=np.add(100000*B,C)
+    FixMatrix=np.add(50*B,C)
 
     funcionts.printHelper("FixMatrix",FixMatrix)
 
@@ -205,7 +205,7 @@ def main():
     bl3 = mlines.Line2D([], [], color='green', marker='s',markersize=10, label='x-direction blocked')
     bl4 = mlines.Line2D([], [], color='cyan', marker='p',markersize=10, label='y-direction blocked')
     bl5 = mlines.Line2D([], [], color='magenta', marker='P',markersize=10, label='x and y direction blocked')
-    bl6 = mlines.Line2D([], [], color='yellow', marker='*',markersize=10, label='Rotation blocked')
+    bl6 = mlines.Line2D([], [], color='yellow', marker='*',markersize=10, label='Movement blocked')
     bl7 = mlines.Line2D([], [], color='red', marker='^',markersize=10, label='Force')
     plt.legend(handles=[bl1,bl2,bl3,bl4,bl5,bl6,bl7])
     funcionts.printHelper("try5",try5)
