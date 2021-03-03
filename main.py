@@ -265,6 +265,15 @@ def main():
         y_values2=[float(FixMatrix[el11][1]), float(FixMatrix[el22][1])]
         ax.plot(x_values2, y_values2,'b')
 
+    for i in range(elma):
+        Safety=5.0
+        if StressRatio[i]<Safety:
+            el11=int(elements[i][1])
+            el22=int(elements[i][2])
+            x_values2=[float(FixMatrix[el11][0]), float(FixMatrix[el22][0])]
+            y_values2=[float(FixMatrix[el11][1]), float(FixMatrix[el22][1])]
+            ax.plot(x_values2, y_values2,'r')
+
         funcionts.printHelper("x_values2",x_values2)
         funcionts.printHelper("y_values2",y_values2)
 
