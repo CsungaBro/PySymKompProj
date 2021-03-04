@@ -29,7 +29,7 @@ variablesArray =[
 
 def main():
     #CSV file import
-    csv_import.csv_toVar('9_Buckling_Dokumentation.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
+    csv_import.csv_toVar('2_ModVer_Dokumentation.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
 
 
     e0 =  element.Element(0,prop,nodes,elements)                                # Test
@@ -232,8 +232,8 @@ def main():
     funcionts.printHelper("Eps",Eps)
 
     # Buckling case decision
-    LambdaG=104
-    LambdaF=61
+    LambdaG=float(prop[0][10])
+    LambdaF=float(prop[0][9])
     SigmaK=[]
     for i in range(len(LAArray)):
         if Lambda[i]>LambdaG:
@@ -241,7 +241,7 @@ def main():
         if Lambda[i]<LambdaF:
              SigmaK.append(0)
         if Lambda[i]<LambdaG and Lambda[i]>LambdaF:
-            SigmaK.append(310-1.14*Lambda[i])
+            SigmaK.append(float(prop[0][11])-float(prop[0][12])*Lambda[i]+float(prop[0][13])*Lambda[i]*Lambda[i])
     funcionts.printHelper("Sigma",Sigma)  
     funcionts.printHelper("SigmaK",SigmaK)  
 
