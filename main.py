@@ -183,7 +183,7 @@ def main():
 
     C=A.astype(float)
     LMatrix=np.add(B,C)
-    FixMatrix=np.add(50*B,C)
+    FixMatrix=np.add(float(prop[0][7])*B,C)
 
     funcionts.printHelper("LMatrix",LMatrix)
 
@@ -263,6 +263,7 @@ def main():
     funcionts.printHelper("StressRatio",StressRatio)
 
     # Result Visualization
+    # Elements
     elma=int((len(elements)))
     for i in range(elma):
         el11=int(elements[i][1])
@@ -271,6 +272,7 @@ def main():
         y_values2=[float(FixMatrix[el11][1]), float(FixMatrix[el22][1])]
         ax.plot(x_values2, y_values2,'b')
 
+    # Buckling
     for i in range(elma):
         if Buckling[i]==0:
             el11=int(elements[i][1])
@@ -278,6 +280,16 @@ def main():
             x_values2=[float(FixMatrix[el11][0]), float(FixMatrix[el22][0])]
             y_values2=[float(FixMatrix[el11][1]), float(FixMatrix[el22][1])]
             ax.plot(x_values2, y_values2,'r')
+            
+    # Beam stress above limit
+    for i in range(elma):
+        if abs(Sigma[i])>4*float(prop[0][6]):
+            el11=int(elements[i][1])
+            el22=int(elements[i][2])
+            x_values2=[float(FixMatrix[el11][0]), float(FixMatrix[el22][0])]
+            y_values2=[float(FixMatrix[el11][1]), float(FixMatrix[el22][1])]
+            ax.plot(x_values2, y_values2,'g')
+    
 
         funcionts.printHelper("x_values2",x_values2)
         funcionts.printHelper("y_values2",y_values2)
