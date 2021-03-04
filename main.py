@@ -183,7 +183,7 @@ def main():
 
     C=A.astype(float)
     LMatrix=np.add(B,C)
-    FixMatrix=np.add(500000*B,C)
+    FixMatrix=np.add(50*B,C)
 
     funcionts.printHelper("LMatrix",LMatrix)
 
@@ -225,9 +225,12 @@ def main():
     Sigma=[]
     Hu=int((len(LAArray)))
     for i in range(Hu):
-        Eps=(abs(L0Array[i]-LAArray[i]))/L0Array[i]
+        Eps=(LAArray[i]-L0Array[i])/L0Array[i]
         Sig=float(prop[0][2])*Eps
         Sigma.append(Sig)
+    
+    funcionts.printHelper("prop[0][2]",prop[0][2])
+    funcionts.printHelper("Eps",Eps)
 
     # Buckling case decision
     LambdaG=104
@@ -247,8 +250,11 @@ def main():
     Buckling=[]
     StressRatio=[]
     for i in range(len(SigmaK)):
-        if SigmaK[i]/Sigma[i]>5:
-            Buckling.append(0)
+        if Sigma[i]<0:
+            if SigmaK[i]/5<abs(Sigma[i]):
+                Buckling.append(0)
+            else:
+                Buckling.append(1)
         else:
             Buckling.append(1)
         StressRatio.append(SigmaK[i]/Sigma[i])
@@ -266,8 +272,7 @@ def main():
         ax.plot(x_values2, y_values2,'b')
 
     for i in range(elma):
-        Safety=5.0
-        if StressRatio[i]<Safety:
+        if Buckling[i]==0:
             el11=int(elements[i][1])
             el22=int(elements[i][2])
             x_values2=[float(FixMatrix[el11][0]), float(FixMatrix[el22][0])]
