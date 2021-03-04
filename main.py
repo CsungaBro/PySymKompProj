@@ -29,14 +29,14 @@ variablesArray =[
 
 def main():
     #CSV file import
-    csv_import.csv_toVar('6_Berettyo_Dokumentation.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
+    csv_import.csv_toVar('9_Buckling_Dokumentation.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
 
 
     e0 =  element.Element(0,prop,nodes,elements)                                # Test
     funcionts.fivePrec(e0.kElementMartix)                                       # Test
     e0.printEr()                                                                # Test
 
-    #Visualization of the input
+    #Printing of the input
     elementsContainer = []                                                      # contains all the ellement
     element.elementsMaker(variablesArray,elementsContainer)                     # makes the elements from the data's
     funcionts.printHelper("nodes",nodes)
@@ -76,22 +76,22 @@ def main():
         if int(condF[j][2])<0:
             x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])-10]#+int(condF[j][2])]
             y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])]
-            ax.plot(x_values, y_values,'r<-')
+            ax.plot(x_values, y_values,'m<-')
         if int(condF[j][2])>0:
             x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])+10]#+int(condF[j][2])]
             y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])]
-            ax.plot(x_values, y_values,'r>-')
+            ax.plot(x_values, y_values,'m>-')
 
     #Forces in "y" direction
     for j in range(len(condF)):
         if int(condF[j][3])<0:
             x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])]
             y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])-10]#+int(condF[j][3])]
-            ax.plot(x_values, y_values,'rv-')
+            ax.plot(x_values, y_values,'mv-')
         if int(condF[j][3])>0:
             x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])]
             y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])+10]#+int(condF[j][3])]
-            ax.plot(x_values, y_values,'r^-')
+            ax.plot(x_values, y_values,'m^-')
 
     #Creation of the "K"-Matrix
     mxSize = len(variablesArray[1])*3 #TODO  implement as DOF                   # It gives the size of the K matrix
@@ -215,8 +215,7 @@ def main():
     funcionts.printHelper("LAArray",LAArray)
 
     # Beam slenderness
-    Beta=1
-    ElmProp=(float(prop[0][4])/float(prop[0][5]))*Beta
+    ElmProp=(float(prop[0][4])/float(prop[0][5]))*float(prop[0][8])
     Lambda=np.multiply(LAArray,math.sqrt(ElmProp))
     
     funcionts.printHelper("Lambda",Lambda)
@@ -257,7 +256,7 @@ def main():
                 Buckling.append(1)
         else:
             Buckling.append(1)
-        StressRatio.append(SigmaK[i]/Sigma[i])
+        #StressRatio.append(SigmaK[i]/Sigma[i])
 
     funcionts.printHelper("Buckling",Buckling)   
     funcionts.printHelper("StressRatio",StressRatio)
