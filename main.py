@@ -29,7 +29,7 @@ variablesArray =[
 
 def main():
     #CSV file import
-    csv_import.csv_toVar('2_ModVer_Dokumentation.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
+    csv_import.csv_toVar('9_Buckling_Dokumentation.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
 
 
     e0 =  element.Element(0,prop,nodes,elements)                                # Test
@@ -241,13 +241,12 @@ def main():
         if Lambda[i]<LambdaF:
              SigmaK.append(0)
         if Lambda[i]<LambdaG and Lambda[i]>LambdaF:
-            SigmaK.append(float(prop[0][11])-float(prop[0][12])*Lambda[i]+float(prop[0][13])*Lambda[i]*Lambda[i])
+            SigmaK.append((float(prop[0][11])-float(prop[0][12])*Lambda[i]+float(prop[0][13])*Lambda[i]*Lambda[i])*10**6)
     funcionts.printHelper("Sigma",Sigma)  
     funcionts.printHelper("SigmaK",SigmaK)  
 
     # Buckling stress comparison
     Buckling=[]
-    StressRatio=[]
     for i in range(len(SigmaK)):
         if Sigma[i]<0:
             if SigmaK[i]/5<abs(Sigma[i]):
@@ -259,7 +258,7 @@ def main():
         #StressRatio.append(SigmaK[i]/Sigma[i])
 
     funcionts.printHelper("Buckling",Buckling)   
-    funcionts.printHelper("StressRatio",StressRatio)
+    
 
     # Result Visualization
     # Elements
@@ -282,7 +281,7 @@ def main():
 
     # Beam stress above limit
     for i in range(elma):
-        if abs(Sigma[i])>4*float(prop[0][6]):
+        if float(prop[0][6])<abs(Sigma[i])*5:
             el11=int(elements[i][1])
             el22=int(elements[i][2])
             x_values2=[float(FixMatrix[el11][0]), float(FixMatrix[el22][0])]
