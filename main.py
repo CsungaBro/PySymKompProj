@@ -18,6 +18,7 @@ elements = []
 condU = []
 condF  = []
 
+#Variables of the Program
 variablesArray =[
     prop, #P_id;dens;E;v;A
     nodes,#N_id;x;y;;
@@ -27,13 +28,15 @@ variablesArray =[
 ]
 
 def main():
-    csv_import.csv_toVar('Test6.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
+    #CSV file import
+    csv_import.csv_toVar('9_Buckling_Dokumentation.csv',variablesArray)                            # it takes the csv file and import its into an array as ints
 
 
     e0 =  element.Element(0,prop,nodes,elements)                                # Test
     funcionts.fivePrec(e0.kElementMartix)                                       # Test
     e0.printEr()                                                                # Test
 
+    #Printing of the input
     elementsContainer = []                                                      # contains all the ellement
     element.elementsMaker(variablesArray,elementsContainer)                     # makes the elements from the data's
     funcionts.printHelper("nodes",nodes)
@@ -41,7 +44,7 @@ def main():
     funcionts.printHelper("len(elements)",len(elements))
     funcionts.printHelper("CondU",condU)
     funcionts.printHelper("len(nodes)",len(nodes))
-    #Visualization of the input
+    
 
     #Elements
     fig = plt.figure()
@@ -73,24 +76,24 @@ def main():
         if int(condF[j][2])<0:
             x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])-10]#+int(condF[j][2])]
             y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])]
-            ax.plot(x_values, y_values,'r<-')
+            ax.plot(x_values, y_values,'m<-')
         if int(condF[j][2])>0:
             x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])+10]#+int(condF[j][2])]
             y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])]
-            ax.plot(x_values, y_values,'r>-')
+            ax.plot(x_values, y_values,'m>-')
 
     #Forces in "y" direction
     for j in range(len(condF)):
         if int(condF[j][3])<0:
             x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])]
             y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])-10]#+int(condF[j][3])]
-            ax.plot(x_values, y_values,'rv-')
+            ax.plot(x_values, y_values,'mv-')
         if int(condF[j][3])>0:
             x_values=[int(nodes[int(condF[j][1])][1]), int(nodes[int(condF[j][1])][1])]
             y_values=[int(nodes[int(condF[j][1])][2]), int(nodes[int(condF[j][1])][2])+10]#+int(condF[j][3])]
-            ax.plot(x_values, y_values,'r^-')
+            ax.plot(x_values, y_values,'m^-')
 
-
+    #Creation of the "K"-Matrix
     mxSize = len(variablesArray[1])*3 #TODO  implement as DOF                   # It gives the size of the K matrix
     globalKMx = np.zeros((mxSize,mxSize))                                       # makes a nxn zero matrix
     funcionts.printHelper("global K Matrix",globalKMx)                          # Test
@@ -99,7 +102,7 @@ def main():
     funcionts.printHelper("global K Matrix",globalKMx)                          # Test
 
 
-
+    # "K"-Matrix reduction
     globalRedKMx = np.copy(globalKMx)                                           # makes a copy of the global K Matrix
     funcionts.printHelper("global K Red Matrix",globalRedKMx)                   # test
     # gr = np.delete(globalRedKMx,[0,1],0)#<-- array, what i, row/coloum        ## Test 
@@ -118,7 +121,7 @@ def main():
     funcionts.printHelper("K Red Matrix",globalRedKMx)                          # Test
 
     
-
+    # Matrix Inversion
     try1 = np.linalg.inv(globalRedKMx)                                          # Inverz
     funcionts.fivePrec(try1)                                                    # it makes the valus display for the 5th value 
     #try2 = np.multiply(fMxRed,try1)                                             # try mult
@@ -126,14 +129,9 @@ def main():
     #try4 = np.matmul(try1,fMxRed)                                               # try multi
     try5 = try1@fMxRed                                                          # try multi
     funcionts.printHelper("try1",try1)                                          # Test
-    #print(try2)
-    #print(try3)
-    #print(try4)
-    #funcionts.printHelper("try2",try2)                                          # Test
-    #funcionts.printHelper("try3",try3)                                          # Test
-    #funcionts.printHelper("try4",try4)                                          # Test
     funcionts.printHelper("try5",try5) 
     
+    # Displacement Selection
     nArray = []
     for init in condU:
         
@@ -181,28 +179,125 @@ def main():
     
     funcionts.printHelper("A",A)
     funcionts.printHelper("B",B)
-    funcionts.printHelper("100B",100*B)
+    funcionts.printHelper("100B",10000*B)
 
     C=A.astype(float)
-    
-    FixMatrix=np.add(B,C)
+    LMatrix=np.add(B,C)
+    FixMatrix=np.add(float(prop[0][7])*B,C)
+
+    funcionts.printHelper("LMatrix",LMatrix)
 
     funcionts.printHelper("FixMatrix",FixMatrix)
 
+    #Buckling
+    #Original element length
+    L0Array=[]
+    for i in range(elmo):
+        el1=int(elements[i][1])
+        el2=int(elements[i][2])
+        x_values0=(float(A[el1][0])-float(A[el2][0]))*(float(A[el1][0])-float(A[el2][0]))
+        y_values0=(float(A[el1][1])-float(A[el2][1]))*(float(A[el1][1])-float(A[el2][1]))
+        L0=math.sqrt(x_values0+y_values0)
+        L0Array.append(L0)
+
+    funcionts.printHelper("L0Array",L0Array)
+
+    #Deformed element length
+    LAArray=[]
+    for i in range(elmo):
+        el1=int(elements[i][1])
+        el2=int(elements[i][2])
+        x_valuesA=(float(LMatrix[el1][0])-float(LMatrix[el2][0]))*(float(LMatrix[el1][0])-float(LMatrix[el2][0]))
+        y_valuesA=(float(LMatrix[el1][1])-float(LMatrix[el2][1]))*(float(LMatrix[el1][1])-float(LMatrix[el2][1]))
+        LA=math.sqrt(x_valuesA+y_valuesA)
+        LAArray.append(LA)
+
+    funcionts.printHelper("LAArray",LAArray)
+
+    # Beam slenderness
+    ElmProp=(float(prop[0][4])/float(prop[0][5]))*float(prop[0][8])
+    Lambda=np.multiply(LAArray,math.sqrt(ElmProp))
+    
+    funcionts.printHelper("Lambda",Lambda)
+
+    # Axial Stress in the Beam
+    Sigma=[]
+    Hu=int((len(LAArray)))
+    for i in range(Hu):
+        Eps=(LAArray[i]-L0Array[i])/L0Array[i]
+        Sig=float(prop[0][2])*Eps
+        Sigma.append(Sig)
+    
+    funcionts.printHelper("prop[0][2]",prop[0][2])
+    funcionts.printHelper("Eps",Eps)
+
+    # Buckling case decision
+    LambdaG=float(prop[0][10])
+    LambdaF=float(prop[0][9])
+    SigmaK=[]
+    for i in range(len(LAArray)):
+        if Lambda[i]>LambdaG:
+            SigmaK.append((math.pi*math.pi*float(prop[0][2])*float(prop[0][5]))/(LAArray[i]*float(prop[0][4])))
+        if Lambda[i]<LambdaF:
+             SigmaK.append(0)
+        if Lambda[i]<LambdaG and Lambda[i]>LambdaF:
+            SigmaK.append((float(prop[0][11])-float(prop[0][12])*Lambda[i]+float(prop[0][13])*Lambda[i]*Lambda[i])*10**6)
+    funcionts.printHelper("Sigma",Sigma)  
+    funcionts.printHelper("SigmaK",SigmaK)  
+
+    # Buckling stress comparison
+    Buckling=[]
+    for i in range(len(SigmaK)):
+        if Sigma[i]<0:
+            if SigmaK[i]/5<abs(Sigma[i]):
+                Buckling.append(0)
+            else:
+                Buckling.append(1)
+        else:
+            Buckling.append(1)
+        #StressRatio.append(SigmaK[i]/Sigma[i])
+
+    funcionts.printHelper("Buckling",Buckling)   
+    
+
+    # Result Visualization
+    # Elements
     elma=int((len(elements)))
     for i in range(elma):
         el11=int(elements[i][1])
         el22=int(elements[i][2])
-        x_values2=[int(FixMatrix[el11][0]), int(FixMatrix[el22][0])]
-        y_values2=[int(FixMatrix[el11][1]), int(FixMatrix[el22][1])]
+        x_values2=[float(FixMatrix[el11][0]), float(FixMatrix[el22][0])]
+        y_values2=[float(FixMatrix[el11][1]), float(FixMatrix[el22][1])]
         ax.plot(x_values2, y_values2,'b')
+
+    # Buckling
+    for i in range(elma):
+        if Buckling[i]==0:
+            el11=int(elements[i][1])
+            el22=int(elements[i][2])
+            x_values2=[float(FixMatrix[el11][0]), float(FixMatrix[el22][0])]
+            y_values2=[float(FixMatrix[el11][1]), float(FixMatrix[el22][1])]
+            ax.plot(x_values2, y_values2,'g')
+
+    # Beam stress above limit
+    for i in range(elma):
+        if float(prop[0][6])<abs(Sigma[i])*5:
+            el11=int(elements[i][1])
+            el22=int(elements[i][2])
+            x_values2=[float(FixMatrix[el11][0]), float(FixMatrix[el22][0])]
+            y_values2=[float(FixMatrix[el11][1]), float(FixMatrix[el22][1])]
+            ax.plot(x_values2, y_values2,'r')
+    
+
+        funcionts.printHelper("x_values2",x_values2)
+        funcionts.printHelper("y_values2",y_values2)
 
     bl1 = mlines.Line2D([], [], color='black', marker='o',markersize=10, label='Original structure')
     bl2 = mlines.Line2D([], [], color='blue', marker='o',markersize=10, label='Deformed structure')
     bl3 = mlines.Line2D([], [], color='green', marker='s',markersize=10, label='x-direction blocked')
     bl4 = mlines.Line2D([], [], color='cyan', marker='p',markersize=10, label='y-direction blocked')
     bl5 = mlines.Line2D([], [], color='magenta', marker='P',markersize=10, label='x and y direction blocked')
-    bl6 = mlines.Line2D([], [], color='yellow', marker='*',markersize=10, label='Rotation blocked')
+    bl6 = mlines.Line2D([], [], color='yellow', marker='*',markersize=10, label='Movement blocked')
     bl7 = mlines.Line2D([], [], color='red', marker='^',markersize=10, label='Force')
     plt.legend(handles=[bl1,bl2,bl3,bl4,bl5,bl6,bl7])
     funcionts.printHelper("try5",try5)
