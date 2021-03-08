@@ -34,10 +34,16 @@ def main(csv_name):
 
     e0 =  element.Element(0,prop,nodes,elements)                                # Test
     funcionts.fivePrec(e0.kElementMartix)                                       # Test
+    e0.printEr()                                                                # Test
 
     #Printing of the input
     elementsContainer = []                                                      # contains all the ellement
     element.elementsMaker(variablesArray,elementsContainer)                     # makes the elements from the data's
+    # funcionts.printHelper("nodes",nodes)
+    # funcionts.printHelper("elements",elements)
+    # funcionts.printHelper("len(elements)",len(elements))
+    # funcionts.printHelper("CondU",condU)
+    # funcionts.printHelper("len(nodes)",len(nodes))
     
 
     #Elements
@@ -90,25 +96,40 @@ def main(csv_name):
     #Creation of the "K"-Matrix
     mxSize = len(variablesArray[1])*3 #TODO  implement as DOF                   # It gives the size of the K matrix
     globalKMx = np.zeros((mxSize,mxSize))                                       # makes a nxn zero matrix
+    # funcionts.printHelper("global K Matrix",globalKMx)                          # Test
     k_matrix.globalKMxMaker(globalKMx,elementsContainer)                        # it makes the global K matrix form the elements
     funcionts.fivePrec(globalKMx)                                               # it makes the valus display for the 5th value
+    # funcionts.printHelper("global K Matrix",globalKMx)                          # Test
 
 
     # "K"-Matrix reduction
     globalRedKMx = np.copy(globalKMx)                                           # makes a copy of the global K Matrix
+    # funcionts.printHelper("global K Red Matrix",globalRedKMx)                   # test
+    # gr = np.delete(globalRedKMx,[0,1],0)#<-- array, what i, row/coloum        ## Test 
+    # gr2 = np.delete(gr,[0,1],1)  #<-- array, what i, row/coloum               ## Test 
 
     globalRedKMx = k_matrix.globalRedKMxMaker(globalRedKMx,variablesArray[3])   # makes the reducted K matrix from the global and the Initial U cond
+    # funcionts.printHelper("globalRedKMx", globalRedKMx,)                        # Test
 
     fMx = f_matrix.initFToArrayMaker(mxSize,variablesArray[4])                  # makes a nx1 matrix/vector from the array F
+    # funcionts.printHelper("F matrix",fMx)                                       # Test
 
     fMxRed = f_matrix.fTofRed(variablesArray[3],fMx)                            # Test
+    # funcionts.printHelper("F Red matrix",fMxRed) #TODO                          # NYOMaték #Test
 
+    # funcionts.printHelper("F Red matrix",fMxRed)                                # Test
+    # funcionts.printHelper("K Red Matrix",globalRedKMx)                          # Test
 
     
     # Matrix Inversion
-    globalRedKMxInv = np.linalg.inv(globalRedKMx)                                          # Inverz
-    funcionts.fivePrec(globalRedKMxInv)                                                    # it makes the valus display for the 5th value                                             # try multi
-    duNewMx = globalRedKMxInv@fMxRed                                                          # try multi                                      # Test
+    try1 = np.linalg.inv(globalRedKMx)                                          # Inverz
+    funcionts.fivePrec(try1)                                                    # it makes the valus display for the 5th value 
+    #try2 = np.multiply(fMxRed,try1)                                             # try mult
+    #try3 = try1*fMxRed                                                          # try multi
+    #try4 = np.matmul(try1,fMxRed)                                               # try multi
+    try5 = try1@fMxRed                                                          # try multi
+    # funcionts.printHelper("try1",try1)                                          # Test
+    funcionts.printHelper("try5",try5) 
     
     # Displacement Selection
     nArray = []
@@ -121,14 +142,19 @@ def main(csv_name):
         if int(init[4]) == 1:
             nArray.append(int(init[1])*3+2)  
                                                    
+    # funcionts.printHelper("nArray",nArray)
+    # funcionts.printHelper("len(nodes)",len(nodes))
 
     FullMatrix=[]
     kszam=(int(len(nodes)))*3
     for z in range(kszam):
         FullMatrix.append(z)
 
+    funcionts.printHelper("kszam",kszam)      
+    funcionts.printHelper("FullMatrix",FullMatrix)
 
     MatDiff=(list(list(set(FullMatrix)-set(nArray)) + list(set(nArray)-set(FullMatrix))))
+    funcionts.printHelper("MatDiff",MatDiff)
 
     ZeroMatrix=[]
     zszam=(int(len(nodes)))*3
@@ -136,21 +162,32 @@ def main(csv_name):
         ZeroMatrix.append(0)
 
     for l in range(len(MatDiff)):
-        ZeroMatrix[MatDiff[l]]=duNewMx[l][0]
+        ZeroMatrix[MatDiff[l]]=try5[l][0]
 
+    funcionts.printHelper("ZeroMatrix",ZeroMatrix)
 
     MovementMatrix = np.array(ZeroMatrix)
     HP=MovementMatrix.reshape(int(len(nodes)),3)
 
+    funcionts.printHelper("HP",HP)        
 
     NodesMod=np.array(nodes)
+    funcionts.printHelper("NodesMod",NodesMod)
 
     A=np.delete(NodesMod, 0, axis=1)
     B=np.delete(HP, 2, axis=1)
     
+    funcionts.printHelper("A",A)
+    funcionts.printHelper("B",B)
+    funcionts.printHelper("100B",10000*B)
+
     C=A.astype(float)
     LMatrix=np.add(B,C)
     FixMatrix=np.add(float(prop[0][7])*B,C)
+
+    funcionts.printHelper("LMatrix",LMatrix)
+
+    funcionts.printHelper("FixMatrix",FixMatrix)
 
     #Buckling
     #Original element length
@@ -163,6 +200,7 @@ def main(csv_name):
         L0=math.sqrt(x_values0+y_values0)
         L0Array.append(L0)
 
+    funcionts.printHelper("L0Array",L0Array)
 
     #Deformed element length
     LAArray=[]
@@ -174,11 +212,13 @@ def main(csv_name):
         LA=math.sqrt(x_valuesA+y_valuesA)
         LAArray.append(LA)
 
+    funcionts.printHelper("LAArray",LAArray)
 
     # Beam slenderness
     ElmProp=(float(prop[0][4])/float(prop[0][5]))*float(prop[0][8])
     Lambda=np.multiply(LAArray,math.sqrt(ElmProp))
     
+    funcionts.printHelper("Lambda",Lambda)
 
     # Axial Stress in the Beam
     Sigma=[]
@@ -188,6 +228,8 @@ def main(csv_name):
         Sig=float(prop[0][2])*Eps
         Sigma.append(Sig)
     
+    funcionts.printHelper("prop[0][2]",prop[0][2])
+    funcionts.printHelper("Eps",Eps)
 
     # Buckling case decision
     LambdaG=float(prop[0][10])
@@ -200,6 +242,8 @@ def main(csv_name):
              SigmaK.append(0)
         if Lambda[i]<LambdaG and Lambda[i]>LambdaF:
             SigmaK.append((float(prop[0][11])-float(prop[0][12])*Lambda[i]+float(prop[0][13])*Lambda[i]*Lambda[i])*10**6)
+    funcionts.printHelper("Sigma",Sigma)  
+    funcionts.printHelper("SigmaK",SigmaK)  
 
     # Buckling stress comparison
     Buckling=[]
@@ -212,6 +256,8 @@ def main(csv_name):
         else:
             Buckling.append(1)
         #StressRatio.append(SigmaK[i]/Sigma[i])
+
+    funcionts.printHelper("Buckling",Buckling)   
     
 
     # Result Visualization
@@ -243,6 +289,8 @@ def main(csv_name):
             ax.plot(x_values2, y_values2,'r')
     
 
+        funcionts.printHelper("x_values2",x_values2)
+        funcionts.printHelper("y_values2",y_values2)
 
     bl1 = mlines.Line2D([], [], color='black', marker='o',markersize=10, label='Original structure')
     bl2 = mlines.Line2D([], [], color='blue', marker='o',markersize=10, label='Deformed structure')
@@ -252,14 +300,7 @@ def main(csv_name):
     bl6 = mlines.Line2D([], [], color='yellow', marker='*',markersize=10, label='Movement blocked')
     bl7 = mlines.Line2D([], [], color='red', marker='^',markersize=10, label='Force')
     plt.legend(handles=[bl1,bl2,bl3,bl4,bl5,bl6,bl7])
-   
-
-    verschiebungsFeld=np.delete(HP, 0, axis=1)
-    funcionts.printHelper("duNewMx",duNewMx)
-    funcionts.printHelper("Displacement Field",verschiebungsFeld)        
-    funcionts.printHelper("New Coordinates",FixMatrix)
-
-
+    funcionts.printHelper("try5",try5)
 
     plt.axis('equal')
     plt.show()

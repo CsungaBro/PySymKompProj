@@ -118,7 +118,6 @@ class Element:
         #print(tMx)
         #print(tMxT)  
         self.kElementMartix = tMxT @ kCompCalc(self.L,self.E,self.A,self.Iz) @ tMx
-        print("jeabtai")
     def printEr(self):
         print(self.x)
         print(self.y)

@@ -19,7 +19,6 @@ def initFToArrayMaker(mxSize,inF):
 def fTofRed(inU,array):
     hArray = []
     for init in inU:
-        print(init)
         if int(init[2]) == 1:
             hArray.append(int(init[1])*3)
         if int(init[3]) == 1:

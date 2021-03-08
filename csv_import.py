@@ -81,4 +81,3 @@ def csv_toVar(csv_File,varArray):
     rangeMaker(rangeCounter,rowCounter)
     dataToArray(varArray,rangeCounter,lines)
     arrayCleaner(varArray)
-    dataPrinter(varArray)
