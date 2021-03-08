@@ -264,4 +264,4 @@ def main(csv_name):
     plt.axis('equal')
     plt.show()
     
-main('9_Buckling_Dokumentation.csv')
+main('6_Berettyo_Dokumentation.csv')
